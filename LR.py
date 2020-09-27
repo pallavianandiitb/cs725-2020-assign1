@@ -24,7 +24,10 @@ def get_features(csv_path,is_train=False,scaler=None):
     m is number of examples, n is number of features
     return value: numpy array
     '''
-
+df = pd.read_csv(csv_path)
+m,n = shape(df)
+feature_matrix = df(:, :-1)
+return feature_matrix
     '''
     Arguments:
     csv_path: path to csv file
@@ -48,6 +51,8 @@ def get_targets(csv_path):
     return a numpy array of shape m x 1
     m is number of examples
     '''
+    targets = df(:, -1)
+    return targets
     raise NotImplementedError
      
 
@@ -58,7 +63,10 @@ def analytical_solution(feature_matrix, targets, C=0.0):
     as described in lecture 5d
     return value: numpy array
     '''
-
+    X = np.transpose(feature_matrix)
+    ainv = np.linalg.inv(X*feature_matrix)
+    weights = ainv*X*targets
+    return weights
     '''
     Arguments:
     feature_matrix: numpy array of shape m x n
@@ -73,7 +81,7 @@ def get_predictions(feature_matrix, weights):
     return predictions given feature matrix and weights
     return value: numpy array
     '''
-
+    predictions = feature_matrix*weights
     '''
     Arguments:
     feature_matrix: numpy array of shape m x n
@@ -88,7 +96,8 @@ def mse_loss(feature_matrix, weights, targets):
     Implement mean squared error loss function
     return value: float (scalar)
     '''
-
+    mse_loss = (1/(2*m))*(sum((feature_matrix*weights - y)**2))
+    return mse_loss
     '''
     Arguments:
     feature_matrix: numpy array of shape m x n
@@ -103,7 +112,8 @@ def l2_regularizer(weights):
     Implement l2 regularizer
     return value: float (scalar)
     '''
-
+    l2r = sum(weights****2)
+    return l2r
     '''
     Arguments
     weights: numpy array of shape n x 1
@@ -115,7 +125,7 @@ def loss_fn(feature_matrix, weights, targets, C=0.0):
     Description:
     compute the loss function: mse_loss + C * l2_regularizer
     '''
-
+    (1/2*m))*(sum((feature_matrix*weights - y)**2)) + C*sum(weights**2)
     '''
     Arguments:
     feature_matrix: numpy array of shape m x n
